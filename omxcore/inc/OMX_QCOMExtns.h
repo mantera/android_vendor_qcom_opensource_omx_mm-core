@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------
-Copyright (c) 2009-2011, Code Aurora Forum. All rights reserved.
+Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -40,9 +40,9 @@ extern "C" {
 *//*========================================================================*/
 
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //                             Include Files
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 #include "OMX_Core.h"
 #include "OMX_Video.h"
 
@@ -350,9 +350,37 @@ enum OMX_QCOM_EXTN_INDEXTYPE
     OMX_QcomIndexParamVideoEncodeMetaBufferMode = 0x7F00001C,
 
     /*"OMX.google.android.index.useAndroidNativeBuffer2"*/
-    OMX_GoogleAndroidIndexUseAndroidNativeBuffer2 = 0x7F00001D
+    OMX_GoogleAndroidIndexUseAndroidNativeBuffer2 = 0x7F00001D,
 
+    /*"OMX.QCOM.index.param.VideoMaxAllowedBitrateCheck"*/
+    OMX_QcomIndexParamVideoMaxAllowedBitrateCheck = 0x7F00001E,
 };
+
+/**
+ * Extension index parameter.  This structure is used to enable
+ * vendor specific extension on input/output port and
+ * to pass the required flags and data, if any.
+ * The format of flags and data being passed is known to
+ * the client and component apriori.
+ *
+ * STRUCT MEMBERS:
+ *  nSize              : Size of Structure plus pData size
+ *  nVersion           : OMX specification version information
+ *  nPortIndex         : Indicates which port to set
+ *  bEnable            : Extension index enable (1) or disable (0)
+ *  nFlags             : Extension index flags, if any
+ *  nDataSize          : Size of the extension index data to follow
+ *  pData              : Extension index data, if present.
+ */
+typedef struct QOMX_EXTNINDEX_PARAMTYPE {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_BOOL bEnable;
+    OMX_U32 nFlags;
+    OMX_U32 nDataSize;
+    OMX_PTR pData;
+} QOMX_EXTNINDEX_PARAMTYPE;
 
 /**
  * Enumeration used to define the video encoder modes
@@ -695,13 +723,12 @@ typedef struct QOMX_VIDEO_PARAM_DIVXTYPE {
     OMX_U32 nPortIndex;
     QOMX_VIDEO_DIVXFORMATTYPE eFormat;
     QOMX_VIDEO_DIVXPROFILETYPE eProfile;
-    OMX_PTR  pDrmHandle;     // DRM handle
 } QOMX_VIDEO_PARAM_DIVXTYPE;
 
 
 
 /**
- * VP Versions
+ *  VP Versions
  */
 typedef enum QOMX_VIDEO_VPFORMATTYPE {
     QOMX_VIDEO_VPFormatUnused = 0x01, /**< Format unused or unknown */
